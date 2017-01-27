@@ -1,0 +1,99 @@
+﻿@model PagedList.IPagedList<TestTaskNavicon.Models.Contact>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "";
+}
+
+
+<h2>Список контактов</h2>
+
+@using (Html.BeginForm("BatchDelete", "Contacts", FormMethod.Post, new { name = "tableForm" })) {
+    @Html.AntiForgeryToken()
+    <p>
+        @Html.ActionLink("Добавить", "Create", null, new { @class = "btn btn-primary" })
+        <a href="javascript:(function(){document.tableForm.submit();return void(0);})()" class="btn btn-warning">
+            Удалить выбранные
+        </a>
+    </p>
+    <table class="table table-striped table-hover">
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td colspan="10">Ни одного контакта пока не добавлено</td>
+            </tr>
+        }
+        else
+        {
+            <thead>
+                <tr>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().name)*@
+                        @Html.ActionLink("Имя", "Index",
+                        new { sortOrder = "name", CurrentSort = ViewBag.CurrentSort, page = ViewBag.CurrentPage })
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().surname)*@
+                        @Html.ActionLink("Фамилия", "Index",
+                        new { sortOrder = "surname", CurrentSort = ViewBag.CurrentSort, page = ViewBag.CurrentPage })
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().patronymic)*@
+                        @Html.ActionLink("Отчество", "Index",
+                        new { sortOrder = "patronymic", CurrentSort = ViewBag.CurrentSort, page = ViewBag.CurrentPage })
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().birthday)*@
+                        @Html.ActionLink("Дата рождения", "Index",
+                        new { sortOrder = "birthday", CurrentSort = ViewBag.CurrentSort, page = ViewBag.CurrentPage })
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FirstOrDefault().sex)*@
+                        @Html.ActionLink("Пол", "Index",
+                        new { sortOrder = "sex", CurrentSort = ViewBag.CurrentSort, page = ViewBag.CurrentPage })
+                    </th>
+                    <th>
+                        @Html.ActionLink("Возраст", "Index",
+                        new { sortOrder = "age", CurrentSort = ViewBag.CurrentSort, page = ViewBag.CurrentPage })
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.patronymic)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.birthday)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.sex)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.age)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Редактировать", "Edit", new { id = item.ID }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Удалить", "Delete", new { id = item.ID }, new { @class = "btn btn-danger" })
+                            <label class="btn btn-warning">
+                                <input type="checkbox" autocomplete="off" name="ids" value="@item.ID" />
+                            </label>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+}
+<br />
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
