@@ -6,9 +6,9 @@
 
 <h2>Подтвеждение удаления</h2>
 
-<h3>Вы уверены, что хотите удалить этот контакт?</h3>
 <div>
     <hr />
+    <h3>Вы уверены, что хотите удалить этот контакт?</h3>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.name)
@@ -55,9 +55,13 @@
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Удалить" class="btn btn-primary" /> |
-            @Html.ActionLink("Назад", "Index", null, new { @class = "btn btn-default" })
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-11">
+                <input type="submit" value="Удалить" class="btn btn-danger" />
+            </div>
         </div>
     }
+</div>
+<div>
+    @Html.ActionLink("Назад", "Index", null, new { @class = "btn btn-default" })
 </div>
